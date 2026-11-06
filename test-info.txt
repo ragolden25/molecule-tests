@@ -1,0 +1,21 @@
+The tarball adds a test switch to quarterly_common (quarterly_force_fail). It forces a named component to fail after its images are built and delivered, so the fallback is tested on real images. It does nothing unless you pass it.
+
+What the test does: it runs the real playbook under the throwaway quarter fy27q1test, seeded from fy27q1, with scans on.
+
+Normal path: grafana, prometheus and nginx build, scan and sign as they will on Jan 1.
+Fallback path: idrac is forced to fail after its images are delivered. That’s the worst case, because the fallback also has to remove that half-delivered output before shipping fy27q1’s 2.6.3.
+It takes about as long as a quarterly Grafana build, roughly 40 minutes, and like the Molecule runner it’s quiet until it finishes. To watch it, run tail -f on the newest /opt/ansible/logs/test_grafana_split-*.log.
+
+What it checks:
+
+the results and fallback per component
+8 images delivered, with the idrac image byte-for-byte fy27q1’s
+every image signature verifies from provenance/signatures
+one run of scans per image, every new scan file signed, and no signatures left in the scan folders
+the compose file names the fallback version
+every fy27q1 file unchanged, by size and timestamp
+When it finishes, it points current back at fy27q1 and removes the dashboard files the test wrote. The test quarter stays so you can look through it; bash test_grafana_split.sh --cleanup removes it.
+
+I also corrected a comment in quarterly_common. It said play_build_grafana_stack.sh -e quarterly_scans=false turns scans off, but the play script doesn’t pass options on to the playbook. It now shows the ansible-playbook form that works.
+
+If all 12 checks pass, the remaining check for this Jira task is the real Q2 build on Jan 1. The Guacamole split can follow the same pattern.
