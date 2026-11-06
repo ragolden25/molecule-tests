@@ -1,0 +1,29 @@
+Done today
+
+Guacamole nucleus fixed and passing:
+Tomcat no longer runs read-only, which caused the 404.
+Port 80 now redirects to 443.
+A Postgres race in the import step is fixed: the readiness check now uses TCP.
+All weekly Molecule tests pass.
+Signatures in one place for both stacks: every signature (images, scans, SAST, build log, container-forge sync) goes to provenance/signatures, and each build resets ccop, nucleus and container-forge so they hold one run’s scans. This also fixed scan and SAST signing, which had never worked.
+Grafana per-component roles:
+quarterly_common plus four component roles, with fallback to the last good version.
+The test quarter build passed, including a forced idrac fallback.
+Quarterly trigger fixed: cron now runs files/common/scripts/check_new_quarter.sh, so Jan 1 will start the Q2 builds.
+Dashboard:
+A Molecule failure details table (what failed, why, which log) and a quarterly fallback table.
+The Guacamole nucleus box is green.
+Security statements updated: the Guacamole read-only exception, the port 80 → 443 redirect line for both stacks, the signing claims, and the external registry wording.
+Container-forge manifest: container-forge publishes a signed manifest.env, and sync-base-image.sh syncs what it lists (new images like node26 are picked up automatically). Both scripts are built and tested; neither is installed yet.
+Built for Monday: the Grafana deployment test on std1 (grafana12-deploy), plus running the CIS benchmark at deployment for both stacks.
+
+Monday
+
+Run test_grafana_split.sh --cleanup.
+Install grafana-deploy-test.tar.gz, then run bash install_cis.sh.
+Run render_weekly_compose.yml, then run-grafana12-deploy.sh deploy && … verify. Send me the result.
+Install the manifest scripts: make_manifest.sh on container-forge, then sync-base-image.sh on ansible-forge.
+Import the updated dashboard JSON, which adds the “Deployed on std1” box.
+Close the Grafana roles Jira task. The remaining check is the Q2 build on Jan 1.
+
+Backlog: the Guacamole roles (next sprint, starting Wednesday), the idrac 3.0.0 config migration, Node toolchain auto-builds, the pipeline audit, the GitLab proving ground, and removing the zip step from install_docker_python.
