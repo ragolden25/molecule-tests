@@ -1,0 +1,26 @@
+[root@ansible-forge ~]# lsblk
+NAME             MAJ:MIN RM  SIZE RO TYPE MOUNTPOINTS
+vda              252:0    0  200G  0 disk
+├─vda1           252:1    0    1G  0 part /boot
+└─vda2           252:2    0  199G  0 part
+  ├─vg00-root    253:0    0   35G  0 lvm  /
+  ├─vg00-swap    253:1    0    2G  0 lvm  [SWAP]
+  ├─vg00-var     253:2    0   20G  0 lvm  /var
+  ├─vg00-tmp     253:4    0    4G  0 lvm  /tmp
+  ├─vg00-log     253:6    0   10G  0 lvm  /var/log
+  ├─vg00-audit   253:9    0    4G  0 lvm  /var/log/audit
+  ├─vg00-var_tmp 253:11   0    4G  0 lvm  /var/tmp
+  ├─vg00-home    253:12   0   20G  0 lvm  /home
+  └─vg00-opt     253:13   0  100G  0 lvm  /opt
+vdb              252:16   0  500G  0 disk
+└─vg01-docker    253:3    0  500G  0 lvm  /var/lib/docker
+vdc              252:32   0    1T  0 disk
+└─vg02-molecule  253:8    0 1024G  0 lvm  /opt/ansible/files/grafana/weekly
+                                          /opt/ansible/files/avocado/weekly
+                                          /opt/ansible/molecule
+vdd              252:48   0  200G  0 disk
+└─vg03-build     253:5    0  200G  0 lvm  /opt/ansible/build
+vde              252:64   0  100G  0 disk
+└─vg04-shipping  253:7    0  100G  0 lvm  /opt/ansible/shipping
+vdf              252:80   0  200G  0 disk
+└─vg05-staged    253:10   0  200G  0 lvm  /opt/ansible/staged
